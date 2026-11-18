@@ -147,12 +147,11 @@ document.getElementById('skip').onclick=endCd;
 const T=new Date('2026-11-20T00:00:00-05:00').getTime(),wt=document.getElementById('wait'),sk=document.getElementById('skip');let iv;
 function start(){wt.querySelector('.wt').textContent='Paula, tengo una sorpresa para ti';wt.querySelector('.ws').textContent='Toca para abrirla';wt.querySelector('.tm').hidden=true;wt.appendChild(go);go.hidden=false}
 const go=document.getElementById('go'),mu=document.getElementById('mu'),SONG='YOYrucjfMSY',VOL=5;let yt,ytOk=false,want=false,ytErr=false;
-window.onYouTubeIframeAPIReady=()=>{yt=new YT.Player('yt',{width:200,height:200,videoId:SONG,playerVars:{playsinline:1,rel:0,autoplay:1},events:{onReady:()=>{ytOk=true;yt.setVolume(VOL);yt.playVideo()},onStateChange:e=>{if(e.data===0)yt.playVideo();if(e.data===1){if(yt.getVolume()!==VOL)yt.setVolume(VOL);mu.textContent='🔊';mu.hidden=false}if(e.data===2)mu.textContent='🔇'},onError:()=>{ytErr=true;mu.textContent='🎵'}}})};
+window.onYouTubeIframeAPIReady=()=>{yt=new YT.Player('yt',{width:200,height:200,videoId:SONG,playerVars:{playsinline:1,rel:0},events:{onReady:()=>{ytOk=true;yt.setVolume(VOL);if(want)yt.playVideo()},onStateChange:e=>{if(e.data===0)yt.playVideo();if(e.data===1){if(yt.getVolume()!==VOL)yt.setVolume(VOL);mu.textContent='🔊';mu.hidden=false}if(e.data===2)mu.textContent='🔇'},onError:()=>{ytErr=true;mu.textContent='🎵'}}})};
 {const s=document.createElement('script');s.src='https://www.youtube.com/iframe_api';document.head.appendChild(s)}
-const kick=()=>{if(ytOk&&yt.getPlayerState()!==1)yt.playVideo();if(ytOk)['pointerdown','touchstart','keydown','click'].forEach(t=>removeEventListener(t,kick,true))};['pointerdown','touchstart','keydown','click'].forEach(t=>addEventListener(t,kick,{capture:true,passive:true}));
 mu.onclick=()=>{if(ytErr)return window.open('https://youtu.be/'+SONG,'_blank','noopener');if(!ytOk)return;yt.getPlayerState()===1?yt.pauseVideo():yt.playVideo()};
 go.onclick=()=>{go.hidden=true;mu.hidden=false;want=true;if(ytOk)yt.playVideo();endCd()};
 function upd(){const s=Math.floor((T-Date.now())/1000);if(s<=0){clearInterval(iv);return start()}const p=n=>String(n).padStart(2,'0'),g=id=>document.getElementById(id);g('dd').textContent=Math.floor(s/86400);g('hh').textContent=p(Math.floor(s%86400/3600));g('mm').textContent=p(Math.floor(s%3600/60));g('ss').textContent=p(s%60)}
-start();
+upd();iv=setInterval(upd,1000);
 </script>
 </body></html>
